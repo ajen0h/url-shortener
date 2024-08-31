@@ -5,10 +5,8 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -44,30 +42,29 @@ export default function UrlForm({ setUrls, urls }: UrlFormProps) {
 
         setUrls([...urls, newUrl])
         console.log([...urls, newUrl])
-        
-        localStorage.setItem("urls",JSON.stringify([...urls, newUrl]))
+
+        localStorage.setItem("urls", JSON.stringify([...urls, newUrl]))
 
     }
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                    control={form.control}
-                    name="url"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Url</FormLabel>
-                            <FormControl>
-                                <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                This is your public display name.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit">Submit</Button>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-12 sm:flex sm:flex-col md:gap-2 ">
+
+                <div className="sm:flex grid gap-2">
+                    <FormField
+                        control={form.control}
+                        name="url"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Input className="min-w-64 bg-white" placeholder="Enter de link..." {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button type="submit" className="w-full">Cutting ✂</Button>
+                </div>
             </form>
         </Form>
     )
