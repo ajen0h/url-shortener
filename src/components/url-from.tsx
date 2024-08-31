@@ -33,6 +33,14 @@ export default function UrlForm({ setUrls, urls }: UrlFormProps) {
 
 
     function onSubmit(values: z.infer<typeof formSchema>) {
+
+        const existUrl = urls.find(url => values.url === url.long_url)
+        if (existUrl) {
+            form.setError("url", {
+                message: "Esta url ya existe!"
+            })
+            return
+        }
         const short_id = crypto.randomUUID().slice(0, 6)
 
         const newUrl = {
@@ -41,23 +49,21 @@ export default function UrlForm({ setUrls, urls }: UrlFormProps) {
         }
 
         setUrls([...urls, newUrl])
-        console.log([...urls, newUrl])
 
         localStorage.setItem("urls", JSON.stringify([...urls, newUrl]))
 
     }
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-12 sm:flex sm:flex-col md:gap-2 ">
-
-                <div className="sm:flex grid gap-2">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
+                <div >
                     <FormField
                         control={form.control}
                         name="url"
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input className="min-w-64 bg-white" placeholder="Enter de link..." {...field} />
+                                    <Input className=" bg-white" placeholder="Enter de link..." {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
