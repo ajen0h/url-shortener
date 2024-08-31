@@ -1,11 +1,10 @@
-/* import { Url } from "@/types"
+import { Url } from "@/types"
 import { useEffect } from "react";
- */
+
 import {  useParams } from "react-router-dom"
 export default function Redirect() {
+    
     const params = useParams()
-    /* 
-
     useEffect(() => {
 
         const init = () => {
@@ -22,6 +21,6 @@ export default function Redirect() {
         init()
 
     }, [])
- */
-    return (<>{params.id}</>)
+
+    return (<></>)
 }
