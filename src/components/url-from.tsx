@@ -11,12 +11,13 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Url } from "@/types"
+import toast from "react-hot-toast"
 
 const formSchema = z.object({
-    url: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
-    }),
-})
+    url: z.string()
+        .nonempty({ message: "URL cannot be empty." }) 
+        .url({ message: "Must be a valid URL." }) 
+});
 
 interface UrlFormProps {
     setUrls: (values: Url[]) => void
@@ -33,7 +34,6 @@ export default function UrlForm({ setUrls, urls }: UrlFormProps) {
 
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-
         const existUrl = urls.find(url => values.url === url.long_url)
         if (existUrl) {
             form.setError("url", {
@@ -42,34 +42,38 @@ export default function UrlForm({ setUrls, urls }: UrlFormProps) {
             return
         }
         const short_id = crypto.randomUUID().slice(0, 6)
-
         const newUrl = {
             long_url: values.url,
             short_id
         }
-
         setUrls([...urls, newUrl])
-
         localStorage.setItem("urls", JSON.stringify([...urls, newUrl]))
+        toast('URL Created!!', {
+            icon: '👏',
+          });
+        form.reset()
 
     }
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
-                <div >
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="grid md:grid-cols-[1fr_auto] gap-2 max-w-4xl mx-auto">
                     <FormField
                         control={form.control}
                         name="url"
                         render={({ field }) => (
                             <FormItem>
-                                <FormControl>
-                                    <Input className=" bg-white" placeholder="Enter de link..." {...field} />
-                                </FormControl>
                                 <FormMessage />
+                                <FormControl>
+                                    <Input className="placeholder:text-black p-6 bg-white " placeholder="Enter de link..." {...field} />
+                                </FormControl>
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="w-full">Cutting ✂</Button>
+                    <div className="flex flex-col justify-end iitece
+                    ">
+                    <Button type="submit" className=" p-6">Cutting ✂</Button>
+                    </div>
                 </div>
             </form>
         </Form>
